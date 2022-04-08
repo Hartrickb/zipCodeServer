@@ -1,5 +1,6 @@
 const axios = require('axios').default;
 
+// Converts zip to latLong
 async function geoLocate(zipCode) {
   let options = {
     method: 'GET',

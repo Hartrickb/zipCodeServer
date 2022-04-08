@@ -1,11 +1,13 @@
 const axios = require('axios').default;
 const _ = require('lodash');
 
+// Pages through and filters results
 async function getPlaces(latLong) {
   let places = [];
   let response;
   do {
     const nextPageToken = _.get(response, 'data.next_page_token', '');
+    // Google rate limit
     await new Promise((resolve) => setTimeout(resolve, 1500));
     let options = {
       method: 'GET',
@@ -17,10 +19,20 @@ async function getPlaces(latLong) {
     places.push(...response.data.results);
   } while (_.has(response.data, 'next_page_token'));
 
+  return filterPlaces(places);
+}
+
+// Remove low rated or closed restaurants
+function filterPlaces(places) {
   places = _.filter(places, { business_status: 'OPERATIONAL' });
   places = _.filter(places, ({ rating }) => rating >= 3.5);
   places = _.filter(places, { opening_hours: { open_now: true } });
 
+  return formatPlaces(places);
+}
+
+// Helper function to make places more user friendly
+function formatPlaces(places) {
   let mappedPlaces = places.map((place) => {
     let mappedPlace = {};
     mappedPlace['location'] = {};

@@ -1,8 +1,6 @@
-// Algorithm to show top restauraunts
-const _ = require('lodash');
 const { scorePlaces } = require('./Utils/scorePlaces');
 
-
+// Returns top 4 places by score
 function letMeChoose(places) {
   const scoredPlaces = scorePlaces(places);
   return scoredPlaces.slice(0, 4);

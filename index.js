@@ -36,8 +36,8 @@ app.post('/pickForMe', async (request, response) => {
   }
   const places = await getPlaces(latLong);
 
-  let scoredPlaces = pickForMe(places);
-  response.send(scoredPlaces[0]);
+  let place = pickForMe(places);
+  response.send(place);
 
   response.on('error', (error) => {
     console.error(error);
